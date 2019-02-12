@@ -1,5 +1,6 @@
 package com.qa.persistence.repository;
 
+import java.io.ObjectInputStream.GetField;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -16,34 +17,58 @@ public class AccountMapRepository implements AccountRepository {
 
 	Map<Long, Account> accountMap = new HashMap<Long, Account>();
 
-	// You must provide concrete implementation for each of these methods
-	// do not change the method signature
-
-	public String getAllAccounts() {
+	public void addstuffz()
+	{
 		Account newAccount = new Account("Bobby", "Bobson", 666);
 		Account newAccount2 = new Account("Johnny", "Bravo", 42);
+		
 		accountMap.put(id++, newAccount);
 		accountMap.put(id++, newAccount2);
-		
-		try {
-			return util.writeValueAsString(accountMap);
+	}
+	
+	
+	public int cycleallaccounts(String name) {
+		int nameCount = 0;
+
+		System.out.println("id " + id);
+
+		for (long i = 0; i < id; i++) {
+			System.out.println(i);
+			if (name.equals(accountMap.get(i).getFirstName())) 
+			{
+				
+				nameCount++;
+			} 
+			else 
+			{
+				System.out.println("dawdawdaw");
 			}
-		catch (Exception e) {
-			return "It Borked";
 		}
-		
+		return nameCount;
 	}
 
-	public String createAccount(String account) {
+	public String getAllAccounts() {
+
 		try {
-		accountMap = util.readValue(account, new TypeReference<Map<String,String>>(){});
-		return "Success";
+			return util.writeValueAsString(accountMap);
+		} catch (Exception e) {
+			return "It Borked";
 		}
-		catch (Exception o)
+
+	}
+
+	public String createAccount(String account) 
+	{
+		try {
+			accountMap = util.readValue(account, new TypeReference<Map<String, String>>() {
+			});
+			return "Success";
+		} 
+		catch (Exception o) 
 		{
-			return "Oops";	
+			return "Oops";
 		}
-		
+
 	}
 
 	public String deleteAccount(Long id, int account) {
@@ -56,8 +81,7 @@ public class AccountMapRepository implements AccountRepository {
 	}
 
 	public String updateAccount(Long id, String account) {
-		//this.accountMap.replace(id, util.getObjectForJSON(account, Account.class));
+		// this.accountMap.replace(id, util.getObjectForJSON(account, Account.class));
 		return "Account updated.";
 	}
-
 }
